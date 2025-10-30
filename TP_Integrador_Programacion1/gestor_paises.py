@@ -38,7 +38,7 @@ def buscar_pais(paises, texto):
 
 
 # ---------------------------------------
-# Filtrar países
+# Filtrar los países
 # ---------------------------------------
 def filtrar_por_continente(paises, continente):
     return [p for p in paises if p["continente"].lower() == continente.lower()]
