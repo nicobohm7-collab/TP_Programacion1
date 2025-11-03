@@ -1,9 +1,9 @@
 """
-Proyecto Final Integrador - Programación 2
+Proyecto Final Integrador - Programación 1
 Gestión de Datos de Países en Python
 
 Autores:
-- Nicolás Bohn y Gabriel Denis
+- Nicolás Bohm y Gabriel Denis
 
 Descripción:
 Este programa permite gestionar un conjunto de países cargados desde un archivo CSV.
@@ -220,7 +220,7 @@ def menu_ordenamientos(paises):
 # ==============================================================
 
 def menu():
-    paises = cargar_paises(r"E:\Tpprog\TP_Programacion1\countries.csv")
+    paises = cargar_paises("countries.csv")
     if not paises:
         print("No se pudieron cargar los datos. Revisá el archivo CSV.")
         return
