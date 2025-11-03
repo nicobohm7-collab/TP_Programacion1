@@ -13,6 +13,23 @@ archivos CSV y manejo básico de errores.
 """
 
 import csv
+import os
+
+# ==============================================================
+# Funciones de Utilidad
+# ==============================================================
+
+def limpiar_texto(texto):
+    """Convierte el texto a minúsculas y elimina manualmente las tildes."""
+    # Convertir a minúsculas
+    texto = texto.lower()
+    # Reemplazo de tildes
+    texto = texto.replace('á', 'a')
+    texto = texto.replace('é', 'e')
+    texto = texto.replace('í', 'i')
+    texto = texto.replace('ó', 'o')
+    texto = texto.replace('ú', 'u')
+    return texto
 
 # ==============================================================
 # Funciones de Carga de Datos
@@ -38,7 +55,10 @@ def cargar_paises(nombre_archivo):
                         superficie = int(fila[2])
                     except ValueError:
                         continue
-                    continente = fila[3].strip()
+                        
+                    # Aplicar normalización al nombre del continente al cargar
+                    continente = limpiar_texto(fila[3].strip())
+                    
                     paises.append({
                         "nombre": nombre,
                         "poblacion": poblacion,
@@ -57,9 +77,13 @@ def cargar_paises(nombre_archivo):
 def buscar_pais(paises, texto):
     """
     Devuelve una lista de países cuyo nombre contenga el texto ingresado.
-    La búsqueda no distingue mayúsculas ni minúsculas.
+    La búsqueda no distingue mayúsculas, minúsculas ni tildes.
     """
-    return [p for p in paises if texto.lower() in p["nombre"].lower()]
+    texto_limpio = limpiar_texto(texto) # Limpia la entrada del usuario
+    return [
+        p for p in paises 
+        if texto_limpio in limpiar_texto(p["nombre"]) # Limpia el nombre del país
+    ]
 
 
 # ==============================================================
@@ -67,8 +91,12 @@ def buscar_pais(paises, texto):
 # ==============================================================
 
 def filtrar_por_continente(paises, continente):
-    """Filtra los países por continente."""
-    return [p for p in paises if p["continente"].lower() == continente.lower()]
+    """Filtra los países por continente. Ignora mayúsculas y acentos."""
+    continente_limpio = limpiar_texto(continente)
+    return [
+        p for p in paises 
+        if p["continente"] == continente_limpio # Compara con el dato ya normalizado
+    ]
 
 
 def filtrar_por_poblacion(paises, minimo, maximo):
@@ -122,8 +150,10 @@ def mostrar_estadisticas(paises):
     for p in paises:
         cont = p["continente"]
         continentes[cont] = continentes.get(cont, 0) + 1
+        
     for cont, cant in continentes.items():
-        print(f"{cont}: {cant}")
+        # Usa .capitalize() para mostrar el continente correctamente
+        print(f"{cont.capitalize()}: {cant}")
 
 
 # ==============================================================
@@ -132,16 +162,37 @@ def mostrar_estadisticas(paises):
 
 def mostrar_paises(paises):
     """
-    Muestra los países en formato tabular simple.
+    Muestra los países en formato tabular con ancho de columna fijo.
     """
     if not paises:
         print("No hay países para mostrar.")
         return
-    print("\nNombre\t\tPoblación\tSuperficie\tContinente")
-    print("-" * 60)
+        
+    # Definir anchos fijos para la alineación
+    ANCHO_NOMBRE = 35
+    ANCHO_CIFRA = 18
+    ANCHO_CONTINENTE = 15
+
+    # 1. Imprimir encabezado con anchos fijos y alineación
+    print("\n" + "=" * 90)
+    print(
+        f"{'Nombre':<{ANCHO_NOMBRE}}{'Población':<{ANCHO_CIFRA}}"
+        f"{'Superficie':<{ANCHO_CIFRA}}{'Continente':<{ANCHO_CONTINENTE}}"
+    )
+    print("-" * 90)
+
+    # 2. Imprimir datos
     for p in paises:
-        print(f"{p['nombre']:<15}{p['poblacion']:<15}{p['superficie']:<15}{p['continente']}")
-    print()
+        # Usamos .capitalize() para que el continente se vea bien
+        continente_mostrar = p['continente'].capitalize() 
+        
+        print(
+            f"{p['nombre']:<{ANCHO_NOMBRE}}"
+            f"{p['poblacion']:<{ANCHO_CIFRA}}"
+            f"{p['superficie']:<{ANCHO_CIFRA}}"
+            f"{continente_mostrar:<{ANCHO_CONTINENTE}}" # Usamos la versión con mayúscula
+        )
+    print("=" * 90)
 
 
 # ==============================================================
@@ -220,7 +271,9 @@ def menu_ordenamientos(paises):
 # ==============================================================
 
 def menu():
-    paises = cargar_paises("countries.csv")
+    directorio_script = os.path.dirname(os.path.abspath(__file__))
+    ruta_csv = os.path.join(directorio_script, "countries.csv")
+    paises = cargar_paises(ruta_csv)
     if not paises:
         print("No se pudieron cargar los datos. Revisá el archivo CSV.")
         return
@@ -271,4 +324,3 @@ if __name__ == "__main__":
 # 3. Real Python - Sorting Data in Python: https://realpython.com/sort-python/
 # 4. Programiz Python Functions: https://www.programiz.com/python-programming/function
 # ==============================================================
-
