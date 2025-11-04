@@ -177,3 +177,7 @@ Entorno: Visual Studio Code / GitHub Desktop
 El proyecto “Gestor de Países” permite poner en práctica conceptos fundamentales de programación estructurada, manejo de archivos y uso de estructuras de datos.
 
 Además, refuerza la importancia del trabajo en equipo y la documentación en proyectos de software.
+
+LINK AL VIDEO EXPLICATIVO Y DEMOSTRATIVO:
+
+https://youtu.be/Hiy7lnUUQpo
