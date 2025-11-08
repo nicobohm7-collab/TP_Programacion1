@@ -1,183 +1,88 @@
-🌎 Gestor de Países — TP Integrador Programación 1
+# Gestión de Datos de Países en Python
+
+**Autores**
+- Gabriel Denis
+- Nicolás Bohm
+
+## Descripción
+Aplicación de consola en Python para gestionar un conjunto de datos de países. Permite buscar países, filtrar por continente, rango de población y superficie, ordenar por distintos campos y mostrar estadísticas básicas. El objetivo del trabajo es practicar estructuras de datos (listas y diccionarios), funciones, modularización, manejo de archivos CSV y validaciones de entradas.
+
+## Requisitos
+- Python 3.8+
+- Módulos estándar: `csv`, `os`
+
+## Estructura del proyecto
+```
+tpi-paises/
+├── countries.csv        # Dataset base (nombre,poblacion,superficie,continente)
+├── main.py              # Punto de entrada (menu)
+├── utilidades.py        # Funciones para carga/guardado y normalización
+├── funciones.py         # Lógica: filtros, busquedas, ordenamientos, estadisticas y CRUD
+├── README.md            # Este archivo
+```
+
+## Diseño y decisiones técnicas (resumen)
+- **Una función = una responsabilidad.** Cada módulo contiene funciones con responsabilidad única para facilitar pruebas y lectura.
+- **Modelo en memoria.** Los países se cargan en memoria como una lista de diccionarios:
+  ```py
+  {
+    "nombre": "Argentina",
+    "poblacion": 45376763,
+    "superficie": 2780400,
+    "continente": "america"
+  }
+  ```
+- **Normalización.** Se normaliza texto a minúsculas y se eliminan tildes para comparaciones consistentes.
+- **CSV robusto.** Verificación de filas con columnas esperadas y manejo de errores al convertir números.
+- **Validaciones de entrada.** Comprobación de entradas numéricas y mensajes claros ante errores.
+
+## Diagrama de flujo (resumen)
+1. `main.py` carga `countries.csv` con `cargar_paises`.
+2. Muestra menú con opciones: buscar, filtrar, ordenar, estadísticas, mostrar todo, agregar, actualizar.
+3. Acciones que modifican datos llaman a `guardar_paises` para persistir cambios.
+4. Funciones puras (`filtrar_por_continente`, `ordenar_paises`, ...) retornan listas que `main.py` muestra con `mostrar_paises`.
+
+## Cómo ejecutar
+1. Desde la consola en la carpeta del proyecto:
+```bash
+python main.py
+```
+2. Usar el menú interactivo:
+- Buscar por texto (coincidencia parcial).
+- Filtrar por continente o por rangos numéricos.
+- Ordenar por nombre, población o superficie (asc/desc).
+- Agregar o actualizar países. Después de agregar/actualizar el CSV se sobrescribe con los cambios.
+
+## Formato del CSV
+El archivo debe tener la primera fila con encabezado:
+```
+nombre,poblacion,superficie,continente
+```
+Ejemplo:
+```
+Argentina,45376763,2780400,América
+Japón,125800000,377975,Asia
+```
+Notas:
+- `poblacion` y `superficie` deben ser enteros.
+- `continente` se normaliza a minúsculas sin tildes para filtros.
+
+## Ejemplos de uso (entrada/salida)
+- Buscar "ar" devuelve "Argentina" y "Brasil" si aplicable.
+- Filtrar por continente "america" devuelve solo países cuyo campo continente coincida.
+- Filtrar por población: Min 1000000 Max 10000000 devuelve países en ese rango.
+
+## Validaciones implementadas
+- Manejo de archivo inexistente con mensaje claro.
+- Ignora filas CSV con columnas o valores numéricos incorrectos.
+- Valida conversiones a `int` al agregar/actualizar.
+- Evita agregar países con nombre duplicado (comparación normalizada).
+
+## Fuentes bibliográficas
+- Documentación oficial de Python: https://docs.python.org/3/library/csv.html
+- Real Python - Sort Data in Python: https://realpython.com/sort-python/
+- Programiz - Python Functions: https://www.programiz.com/python-programming/function
+
+## Licencia
+Proyecto entregado como trabajo práctico. Libre para uso académico.
 
-🧩 Descripción del programa
-
-Este programa permite gestionar información de países utilizando un archivo CSV (countries.csv) como base de datos.
-
-El sistema carga los datos desde el archivo y ofrece distintas funcionalidades, como listar países, filtrarlos por continente o buscar información específica.
-
-El proyecto fue desarrollado como trabajo integrador para la materia Programación 1, utilizando Python y estructuras de datos básicas como listas y diccionarios.
-
-🚀 Instrucciones de uso
-
-_Asegurarse de que el archivo countries.csv se encuentre en la misma carpeta que el archivo gestor_paises.py.
-
-_Ejecutar el programa principal desde la terminal o VS Code con:
-
-python gestor_paises.py
-
-_Una vez iniciado, el programa mostrará un menú de opciones, por ejemplo:
-
-         GESTOR DE PAÍSES
-1. Buscar país por nombre
-2. Filtrar países
-3. Ordenar países
-4. Ver estadísticas
-5. Mostrar todos
-0. Salir
-Elija una opción:
-
-💡 Ejemplos de entradas y salidas
-Ejemplo 1: Buscar país por nombre
-
-Entrada:
-
-1
-
-España
-
-Salida:
-
-Nombre                             Población         Superficie        Continente
-
-España                             47351567          505990            Europa
-
-...
-
-Ejemplo 2: Filtrar países por continente
-
-Entrada:
-
-2
-
-1
-
-oceania
-
-
-Salida:
-
-
-Nombre                             Población         Superficie        Continente
-
-Australia                          25788214          7692024           Oceania
-
-Nueva Zelanda                      5185288           268021            Oceania
-
-Papúa Nueva Guinea                 10710000          462840            Oceania
-
-Fiyi                               936000            18274             Oceania
-
-Islas Salomón                      740000            28896             Oceania
-
-Vanuatu                            341000            12189             Oceania
-
-Samoa                              225000            2842              Oceania
-
-Tonga                              106000            747               Oceania
-
-Kiribati                           131000            811               Oceania
-
-Micronesia                         115000            702               Oceania
-
-Islas Marshall                     42700             181               Oceania
-
-Palaos                             18000             459               Oceania
-
-Nauru                              12500             21                Oceania
-
-Tuvalu                             11300             26                Oceania
-
-...
-
-Ejemplo 3: Ordenar países por superficie descendente
-
-Entrada:
-
-3
-
-3
-
-s
-
-
-Salida:
-
-
-Nombre                             Población         Superficie        Continente
-
-Rusia                              144444359         17098246          Europa
-
-Canadá                             38008005          9984670           America
-
-Estados Unidos                     333287557         9833517           America
-
-China                              1419321278        9596961           Asia
-
-Brasil                             213993437         8515767           America
-
-Australia                          25788214          7692024           Oceania
-
-India                              1428627663        3287263           Asia
-
-Argentina                          45376763          2780400           America
-
-Kazajistán                         19750000          2724900           Asia
-
-Argelia                            46496556          2381741           Africa
-
-República Democrática del Congo    102262808         2344858           Africa
-
-Arabia Saudita                     36947025          2149690           Asia
-
-México                             130262216         1964375           America
-
-Indonesia                          277534122         1904569           Asia
-
-Sudán                              48190000          1861484           Africa
-
-Irán                               89172767          1648195           Asia
-
-Mongolia                           3470000           1564110           Asia
-
-Perú                               33715471          1285216           America
-
-Chad                               18200000          1284000           Africa
-(etc...)
-...
-
-👥 Participaron los integrantes:
-
-Nicolás Bohm
-Gabriel Denis
-
-
-📂 Estructura del proyecto
-TP_Integrador_Programacion1/
-
-│
-
-├── gestor_paises.py        # Código principal del programa
-
-├── countries.csv           # Archivo de datos con todos los países
-
-└── README.md               # Documentación del proyecto
-
-
-🧠 Tecnologías utilizadas
-
-Lenguaje: Python 3
-
-Archivos de datos: CSV
-
-Entorno: Visual Studio Code / GitHub Desktop
-
-🏁 Conclusión
-
-El proyecto “Gestor de Países” permite poner en práctica conceptos fundamentales de programación estructurada, manejo de archivos y uso de estructuras de datos.
-
-Además, refuerza la importancia del trabajo en equipo y la documentación en proyectos de software.
-
-LINK AL VIDEO EXPLICATIVO Y DEMOSTRATIVO:
-
-https://youtu.be/Hiy7lnUUQpo
