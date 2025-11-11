@@ -14,6 +14,7 @@ Aplicación de consola en Python para gestionar un conjunto de datos de países.
 ## Estructura del proyecto
 ```
 tpi-paises/
+├── .gitignore           # Ignora archivos de caché .pyc
 ├── countries.csv        # Dataset base (nombre,poblacion,superficie,continente)
 ├── main.py              # Punto de entrada (menu)
 ├── utilidades.py        # Funciones para carga/guardado y normalización
