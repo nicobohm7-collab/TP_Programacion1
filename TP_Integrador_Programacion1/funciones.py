@@ -165,3 +165,31 @@ def mostrar_paises(paises):
         )
 
     print("=" * 90)
+
+
+def eliminar_pais(paises):
+    """Elimina un país de la lista por su nombre."""
+    nombre_eliminar = input("Ingrese el pais a eliminar: ").strip()
+    
+    if not nombre_eliminar:
+        print("Nombre inválido.")
+        return
+
+    nombre_limpio = limpiar_texto(nombre_eliminar)
+    indice_a_eliminar = -1 
+    
+    for i, p in enumerate(paises):
+        if limpiar_texto(p["nombre"]) == nombre_limpio:
+            indice_a_eliminar = i
+            break
+    
+    if indice_a_eliminar != -1:
+        # Confirmación
+        confirmacion = input(f"¿Seguro que desea eliminar {paises[indice_a_eliminar]['nombre']}? (s/n): ").lower()
+        if confirmacion == 's':
+            paises.pop(indice_a_eliminar)
+            print("Pais eliminado correctamente.")
+        else:
+            print("Operación cancelada.")
+    else:
+        print("El pais no existe.")

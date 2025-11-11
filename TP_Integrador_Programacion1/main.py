@@ -9,7 +9,8 @@ from funciones import (
     mostrar_estadisticas,
     mostrar_paises,
     agregar_pais,
-    actualizar_pais
+    actualizar_pais,
+    eliminar_pais
 )
 
 def menu():
@@ -34,6 +35,7 @@ def menu():
         print("5. Mostrar todos")
         print("6. Agregar pais")
         print("7. Actualizar pais")
+        print("8. Eliminar pais")
         print("0. Salir")
 
         # Lectura de opcion principal
@@ -107,6 +109,11 @@ def menu():
         elif op == "7":
             # Actualiza un pais existente y guarda los cambios
             actualizar_pais(paises)
+            guardar_paises(ruta, paises)
+
+        elif op == "8":
+            # Elimina un pais por nombre y guarda los cambios
+            eliminar_pais(paises)
             guardar_paises(ruta, paises)
 
         elif op == "0":
