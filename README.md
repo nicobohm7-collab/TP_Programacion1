@@ -4,6 +4,9 @@
 - Gabriel Denis
 - Nicolás Bohm
 
+## Video Explicativo
+https://drive.google.com/file/d/1wHiD47Va9AFR3lKxeU45l4jmYM8Ih1xb/view?usp=sharing
+
 ## Descripción
 Aplicación de consola en Python para gestionar un conjunto de datos de países. Permite buscar países, filtrar por continente, rango de población y superficie, ordenar por distintos campos y mostrar estadísticas básicas. El objetivo del trabajo es practicar estructuras de datos (listas y diccionarios), funciones, modularización, manejo de archivos CSV y validaciones de entradas.
 
