@@ -39,7 +39,7 @@ tpi-paises/
 
 ## Diagrama de flujo (resumen)
 1. `main.py` carga `countries.csv` con `cargar_paises`.
-2. Muestra menú con opciones: buscar, filtrar, ordenar, estadísticas, mostrar todo, agregar, actualizar.
+2. Muestra menú con opciones: buscar, filtrar, ordenar, estadísticas, mostrar todo, agregar, actualizar, eliminar.
 3. Acciones que modifican datos llaman a `guardar_paises` para persistir cambios.
 4. Funciones puras (`filtrar_por_continente`, `ordenar_paises`, ...) retornan listas que `main.py` muestra con `mostrar_paises`.
 
